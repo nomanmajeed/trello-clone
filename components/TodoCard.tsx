@@ -1,4 +1,5 @@
-import { type } from 'os';
+"use client"
+
 import { DraggableProvidedDraggableProps, DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
 type Props = {
@@ -11,8 +12,20 @@ type Props = {
 }
 
 
-export default function TodoCard({} : Props) {
+export default function TodoCard({
+    todo,
+    index,
+    id,
+    innerRef,
+    draggableProps,
+    dragHandleProps
+} : Props) {
   return (
-    <div>TodoCard</div>
+    <div
+        className="bg-white rounded-md space-y-2 drop-shadow-md"
+        {...draggableProps} {...dragHandleProps} ref={innerRef}
+    >
+        <h1>Hello</h1>
+    </div>
   )
 }
