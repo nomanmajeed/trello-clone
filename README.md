@@ -1,1 +1,3 @@
-## Trello AI Clone - Next JS
+# Trello AI Clone
+
+This is a trello ai clone
