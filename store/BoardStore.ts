@@ -1,4 +1,4 @@
-import { databases } from "@/appwrite";
+import { databases, storage } from "@/appwrite";
 import { getTodosGroupedByColumn } from "@/lib/getTodosGroupedByColumn";
 import { create } from "zustand";
 
@@ -10,6 +10,8 @@ interface BoardState {
 
     searchString: string
     setSearchString: (searchString: string) => void
+
+    deleteTask: (taskIndex:number, todo: Todo, id: TypedColumn) => void
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
@@ -34,5 +36,24 @@ export const useBoardStore = create<BoardState>((set) => ({
     },
 
     searchString: "",
-    setSearchString: (searchString) => set({ searchString })
+    setSearchString: (searchString) => set({ searchString }),
+
+    deleteTask: async (taskIndex, todo, id) => {
+        const newColumns = new Map(useBoardStore.getState().board.columns)
+
+        // Remove the todo from the column
+        newColumns.get(id)?.todos.splice(taskIndex, 1)
+
+        set({ board: { columns: newColumns } });
+
+        if (todo.image) {
+            await storage.deleteFile(todo.image.bucketId, todo.image.fileId)
+        }
+
+        await databases.deleteDocument(
+            process.env.NEXT_PUBLIC_DATABASE_ID!,
+            process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
+            todo.$id
+        )
+    },
 }))
