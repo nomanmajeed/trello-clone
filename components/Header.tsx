@@ -39,7 +39,7 @@ function Header() {
 				/>
 
 				<Image
-					src="https://links.papareact.com/c2cdd5"
+					src="/images/Trello_logo.png"
 					alt="Trello Logo"
 					width={300}
 					height={100}
